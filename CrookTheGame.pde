@@ -43,6 +43,7 @@ boolean endAnlasma;
 boolean isPicturesBig;
 boolean[] keys;
 boolean projectilesPopulated = false;
+boolean lost = false;
 int groundY;
 
 void setup() {
@@ -85,8 +86,13 @@ void setup() {
       myEoSAnlasma();
     }
   };
-  animasyonKazanma = new Movie(this, "animation/liderkazandi.mp4");
-  animasyonKaybetme = new Movie(this, "animation/liderkaybetti.mp4");
+  animasyonKazanma = new Movie(this, "animation/liderkazandi.mp4") {
+    @ Override public void eosEvent() {
+      super.eosEvent();
+      myEoSKaybetme();
+    }
+  };
+  animasyonKaybetme = new Movie(this, "animation/liderkaybetti.mp4") ;
   //animasyon.play();
   minim = new Minim(this);
   music = minim.loadFile("music.mp3");
@@ -154,7 +160,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": Education is very important. You\n shouldn't destroy it.", 275, 100);
+        text(": Education is very important. You\n                                                shouldn't destroy it.", 275, 100);
         textSize(normal_text);
         if (mouseY < 200  && mouseY > 170 && mouseX > 250) {
           textSize(big_text);
@@ -234,7 +240,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": You can be the leader but you can't destroy education.", 275, 102);
+        text(": You can be the leader but\n                                                 you can't destroy education.", 275, 102);
         textSize(normal_text);
         if (mouseY < 205  && mouseY > 180) {
           textSize(big_text);
@@ -324,7 +330,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": Ne need to be angry. Stop destroying education please!", 280, 105);
+        text(": Ne need to be angry. Stop\n                                 destroying education please!", 280, 105);
         textSize(normal_text);
         if (mouseY < 205  && mouseY > 180) {
           textSize(big_text);
@@ -394,9 +400,26 @@ void draw() {
       break;
       //Kazanma
     case 60:
-      music.pause();
-      animasyonKazanma.play();
-      image(animasyonKazanma, 0, 0);
+
+      if (lost) {
+        textSize(100);
+        fill(128);
+        text("Press space to restart", 200, 360);
+        if (!keys[0]) {
+          nesneler[0] = 3;
+          nesneler[1] = 3;
+          nesneler[2] = 3;
+          nesneler[3] = 3;
+          lider = new Lider(280, 380);
+          muhalefet = new Muhalefet(725, 380);
+          sahne = 2;
+        }
+      } else {
+        music.pause();
+        animasyonKazanma.play();
+        image(animasyonKazanma, 0, 0);
+      }
+      println(lost);
       break;
       //Kaybetme
     case 70:
@@ -463,14 +486,17 @@ void draw() {
             atak = true;
           }
         }
-
-        if (abs(lider.x - muhalefet.x + 100) < 250)
+        println(millis() + " " + sure);
+        if (abs(lider.x - muhalefet.x + 100) < 250 && millis() > sure) {
           lider.jump();
+          sure = millis() + 2000;
+        }
+
         if (abs(lider.x - muhalefet.x) > 50)
           if (lider.x - muhalefet.x > 40)
-            lider.x -= 10;
+            lider.x -= 7;
           else if (lider.x - muhalefet.x < 40)
-            lider.x += 10;
+            lider.x += 7;
 
         if (keys[1])
           if (muhalefet.x < width-muhalefet.resim.width) {
@@ -579,4 +605,8 @@ void myEoS() {
 
 void myEoSAnlasma() {
   endAnlasma = true;
+}
+
+void myEoSKaybetme() {
+  lost = true;
 }
