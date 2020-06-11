@@ -20,7 +20,6 @@ PImage arkaPlan;
 PImage konusma;
 PImage geri;
 PImage attackImage;
-String textToSay;
 int secim1;
 int secim2;
 int sahne = 0;
@@ -69,7 +68,7 @@ void setup() {
   projectile[0] = loadImage("projectile/1.png");
   projectile[1] = loadImage("projectile/2.png");
   projectile[2] = loadImage("projectile/3.png");
-  animasyon = new Movie(this, "animation/animasyon.mp4") {
+  animasyon = new Movie(this, "animation/animasyon_trim.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
       myEoS();
@@ -112,7 +111,7 @@ void draw() {
       } else {
         //X 385 Y 340
         textSize(60);
-        text("Press space to start", 385, 340);
+        text("Press space to start", 385, 300);
       }
       break;
     case 1:
@@ -146,7 +145,6 @@ void draw() {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
             sahne = 11;
-            textToSay = "Education is very important. You\n shouldn't destroy it.";
             sure = millis() + 4000;
           }
         }
@@ -156,7 +154,6 @@ void draw() {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
             sahne = 12;
-            textToSay = "You can't destroy education!";
             sure = millis() + 4000;
           }
         }
@@ -183,7 +180,6 @@ void draw() {
         if (mouseY < 105 && mouseY > 75 && mouseX > 250) {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
-            textToSay = "Education enables countries to\n grow economically.";
             sahne = 21;
             sure = millis() + 4000;
           }
@@ -194,7 +190,6 @@ void draw() {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
             sahne = 22;
-            textToSay = "I will never let you destroy education!";
             sure = millis() + 4000;
           }
         }
@@ -218,7 +213,6 @@ void draw() {
         }
         image(konusma, 0, -50);
       } else {
-        muhalefet.say(textToSay);
         lider.say("Get out of my way!");
       }
       break;
@@ -231,7 +225,6 @@ void draw() {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
             sahne = 21;
-            textToSay = "You can be the leader but \n you can't destroy education.";
             sure = millis() + 4000;
           }
         }
@@ -241,7 +234,6 @@ void draw() {
           textSize(big_text);
           if (mousePressed && (mouseButton == LEFT)) {
             sahne = 22;
-            textToSay = "You can never be a real leader!";
             sure = millis() + 4000;
           }
         }
@@ -266,7 +258,6 @@ void draw() {
         }
         image(konusma, 0, -50);
       } else {
-        muhalefet.say(textToSay);
         lider.say("Why!");
       }
       break;
@@ -280,7 +271,6 @@ void draw() {
           if (mousePressed && (mouseButton == LEFT)) {
             //30 Anlaşma
             sahne = 30;
-            textToSay = "There are other ways to change.\nStop destroying education please.";
             sure = millis() + 4000;
           }
         }
@@ -312,7 +302,6 @@ void draw() {
         }
         image(konusma, 0, -50);
       } else {
-        muhalefet.say(textToSay);
         lider.say("Money is very important!");
       }
       break;
@@ -326,7 +315,6 @@ void draw() {
           if (mousePressed && (mouseButton == LEFT)) {
             //30 Anlaşma
             sahne = 30;
-            textToSay = "Ne need to be angry.\nStop destroying education please!";
             sure = millis() + 4000;
           }
         }
@@ -359,7 +347,6 @@ void draw() {
         }
         image(konusma, 0, -50);
       } else {
-        muhalefet.say(textToSay);
         lider.say("Who are you?");
       }
       break;
@@ -396,7 +383,6 @@ void draw() {
         }
         image(konusma, 0, -50);
       } else {
-        muhalefet.say(textToSay);
         lider.say("Okay but on one condition.\nYou will obey Mr. Big.");
       }
       break;
