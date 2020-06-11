@@ -106,7 +106,6 @@ void setup() {
 
 void draw() {
   textSize(normal_text);
-  else
     
     //image(animasyon, 0, 0);
     if (ended)
@@ -167,7 +166,7 @@ void draw() {
               sure = millis() + 4000;
             }
           }
-          text(": Education is very important. You shouldn't\n      destroy it.", 275, 100);
+          text(": Education is very important. You shouldn't\n  destroy it.", 275, 100);
           textSize(normal_text);
           if (mouseY < 200  && mouseY > 170 && mouseX > 250) {
             textSize(big_text);
@@ -247,7 +246,7 @@ void draw() {
               sure = millis() + 4000;
             }
           }
-          text(": You can be the leader but\n                                                 you can't destroy education.", 275, 102);
+          text(": You can be the leader but\n you can't destroy education.", 275, 102);
           textSize(normal_text);
           if (mouseY < 205  && mouseY > 180) {
             textSize(big_text);
@@ -337,7 +336,7 @@ void draw() {
               sure = millis() + 4000;
             }
           }
-          text(": Ne need to be angry. Stop\n                                 destroying education please!", 280, 105);
+          text(": Ne need to be angry. Stop\n destroying education please!", 280, 105);
           textSize(normal_text);
           if (mouseY < 205  && mouseY > 180) {
             textSize(big_text);
