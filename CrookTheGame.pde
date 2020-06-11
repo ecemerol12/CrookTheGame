@@ -91,10 +91,15 @@ void setup() {
   animasyonKazanma = new Movie(this, "animation/liderkazandi.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
+      myEoSKazanma();
+    }
+  };
+  animasyonKaybetme = new Movie(this, "animation/liderkaybetti.mp4") {
+    @ Override public void eosEvent() {
+      super.eosEvent();
       myEoSKaybetme();
     }
   };
-  animasyonKaybetme = new Movie(this, "animation/liderkaybetti.mp4") ;
   //animasyon.play();
   minim = new Minim(this);
   music = minim.loadFile("music.mp3");
@@ -163,7 +168,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": Education is very important. You\n                                                      shouldn't destroy it.", 275, 100);
+        text(": Education is very important. You shouldn't destroy it.", 275, 100);
         textSize(normal_text);
         if (mouseY < 200  && mouseY > 170 && mouseX > 250) {
           textSize(big_text);
@@ -243,7 +248,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": You can be the leader but\n                                                 you can't destroy education.", 275, 102);
+        text(": You can be the leader but you can't destroy education.", 275, 102);
         textSize(normal_text);
         if (mouseY < 205  && mouseY > 180) {
           textSize(big_text);
@@ -289,7 +294,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": There are other ways to change.Stop\n destroying education please.", 275, 75);
+        text(": There are other ways to change.Stop destroying education please.", 275, 75);
         textSize(normal_text);
         if (mouseY < 205  && mouseY > 180 && mouseX > 250) {
           textSize(big_text);
@@ -333,7 +338,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": Ne need to be angry. Stop\n                                 destroying education please!", 280, 105);
+        text(": Ne need to be angry. Stop destroying education please!", 280, 105);
         textSize(normal_text);
         if (mouseY < 205  && mouseY > 180) {
           textSize(big_text);
@@ -418,22 +423,55 @@ void draw() {
           sahne = 2;
         }
       } else {
+        noCursor();
         music.pause();
         animasyonKazanma.play();
         image(animasyonKazanma, 0, 0);
       }
-      println(lost);
       break;
       //Kaybetme
     case 70:
-      music.pause();
+    if (lost) {
+        textSize(100);
+        fill(128);
+        text("Press space to restart", 200, 360);
+        if (!keys[0]) {
+          nesneler[0] = 3;
+          nesneler[1] = 3;
+          nesneler[2] = 3;
+          nesneler[3] = 3;
+          lider = new Lider(280, 380);
+          muhalefet = new Muhalefet(725, 380);
+          sahne = 2;
+        }
+      } else {
+        noCursor();
+        music.pause();
       animasyonKaybetme.play();
       image(animasyonKaybetme, 0, 0);
+      }
+      
       break;
     case 80:
+    if (lost) {
+        textSize(100);
+        fill(128);
+        text("Press space to restart", 200, 360);
+        if (!keys[0]) {
+          nesneler[0] = 3;
+          nesneler[1] = 3;
+          nesneler[2] = 3;
+          nesneler[3] = 3;
+          lider = new Lider(280, 380);
+          muhalefet = new Muhalefet(725, 380);
+          sahne = 2;
+        }
+      } else {
+      noCursor();
       music.pause();
       animasyonAnlasma.play();
       image(animasyonAnlasma, 0, 0);
+      }
       break;
     case 90:
       rect(30, 50, lider.can, 50, 10, 10, 10, 10);
@@ -521,10 +559,10 @@ void draw() {
             } else if (mouseY > 280 && mouseY < 380 && nesneler[1] > 0) {
               nesne = new Nesne(mouseX, mouseY, resimAdalet, 1);
               projectilesPopulated = true;
-            } else if (mouseY > 420 && mouseY < 520 && nesneler[1] > 0) {
+            } else if (mouseY > 420 && mouseY < 520 && nesneler[2] > 0) {
               nesne = new Nesne(mouseX, mouseY, resimOzgurluk, 2);
               projectilesPopulated = true;
-            } else if (mouseY > 560 && mouseY < 660 && nesneler[1] > 0) {
+            } else if (mouseY > 560 && mouseY < 660 && nesneler[3] > 0) {
               nesne = new Nesne(mouseX, mouseY, resimEgitim, 3);
               projectilesPopulated = true;
             }
@@ -607,9 +645,13 @@ void myEoS() {
 }
 
 void myEoSAnlasma() {
-  endAnlasma = true;
+  lost = true;
 }
 
 void myEoSKaybetme() {
+  lost = true;
+}
+
+void myEoSKazanma() {
   lost = true;
 }
