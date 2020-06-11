@@ -24,6 +24,7 @@ PImage arkaPlan;
 PImage konusma;
 PImage geri;
 PImage attackImage;
+PImage cursorImage;
 int secim1;
 int secim2;
 int sahne = 0;
@@ -50,6 +51,7 @@ void setup() {
   frameRate(30);
   size(1280, 720);
   smooth();
+  cursorImage = loadImage("cursor.png");
   secim1 = 32;
   secim2 = 32;
   speed = 1;
@@ -101,6 +103,7 @@ void setup() {
 
 void draw() {
   textSize(normal_text);
+  cursor(cursorImage,16,16);
   //image(animasyon, 0, 0);
   if (ended)
   {
@@ -160,7 +163,7 @@ void draw() {
             sure = millis() + 4000;
           }
         }
-        text(": Education is very important. You\n                                                shouldn't destroy it.", 275, 100);
+        text(": Education is very important. You\n                                                      shouldn't destroy it.", 275, 100);
         textSize(normal_text);
         if (mouseY < 200  && mouseY > 170 && mouseX > 250) {
           textSize(big_text);
@@ -446,13 +449,13 @@ void draw() {
       }
 
       image(resimDin, 1100, 150);
-      text("x" + nesneler[0], 1130, 270);
+      text("x" + nesneler[0], 1130, 280);
       image(resimAdalet, 1100, 280);
-      text("x" + nesneler[1], 1130, 420);
+      text("x" + nesneler[1], 1130, 410);
       image(resimOzgurluk, 1100, 420);
-      text("x" + nesneler[2], 1130, 540);
+      text("x" + nesneler[2], 1130, 550);
       image(resimEgitim, 1100, 560);
-      text("x" + nesneler[3], 1130, 680);
+      text("x" + nesneler[3], 1130, 690);
 
       if (keys[0]) {
 
@@ -487,12 +490,12 @@ void draw() {
           }
         }
         println(millis() + " " + sure);
-        if (abs(lider.x - muhalefet.x + 100) < 250 && millis() > sure) {
+        if (abs(lider.x - muhalefet.x + 100) < 250 && millis() > sure && lider.can < 280) {
           lider.jump();
           sure = millis() + 2000;
         }
 
-        if (abs(lider.x - muhalefet.x) > 50)
+        if (abs(lider.x - muhalefet.x) > 50 && lider.can < 280)
           if (lider.x - muhalefet.x > 40)
             lider.x -= 7;
           else if (lider.x - muhalefet.x < 40)
