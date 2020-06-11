@@ -9,13 +9,17 @@ import ddf.minim.ugens.*;
 Minim minim;
 AudioPlayer music; 
 PFont mono;
-ArrayList<Nesne> nesneler = new ArrayList<Nesne>();
+Nesne nesne;
+int[] nesneler = {3, 3, 3, 3};
 
 Lider lider;
 Muhalefet muhalefet;
 PImage liderResim;
 PImage muhalefetResim;
-PImage[] projectile;
+PImage resimDin;
+PImage resimAdalet;
+PImage resimOzgurluk;
+PImage resimEgitim;
 PImage arkaPlan;
 PImage konusma;
 PImage geri;
@@ -38,6 +42,7 @@ boolean atak;
 boolean endAnlasma;
 boolean isPicturesBig;
 boolean[] keys;
+boolean projectilesPopulated = false;
 int groundY;
 
 void setup() {
@@ -64,16 +69,16 @@ void setup() {
   textFont(mono);
   groundY = 625;
   isPicturesBig = true;
-  projectile = new PImage[3];
-  projectile[0] = loadImage("projectile/1.png");
-  projectile[1] = loadImage("projectile/2.png");
-  projectile[2] = loadImage("projectile/3.png");
-  animasyon = new Movie(this, "animation/animasyon.mp4") {
-    @ Override public void eosEvent() {
-      super.eosEvent();
-      myEoS();
-    }
-  };
+  resimAdalet = loadImage("projectile/1.png");
+  resimDin = loadImage("projectile/2.png");
+  resimOzgurluk = loadImage("projectile/3.png");
+  resimEgitim = loadImage("projectile/4.png");
+  //animasyon = new Movie(this, "animation/animasyon.mp4") {
+  //  @ Override public void eosEvent() {
+  //    super.eosEvent();
+  //    myEoS();
+  //  }
+  //};
   animasyonAnlasma = new Movie(this, "animation/anlasma.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
@@ -82,14 +87,15 @@ void setup() {
   };
   animasyonKazanma = new Movie(this, "animation/liderkazandi.mp4");
   animasyonKaybetme = new Movie(this, "animation/liderkaybetti.mp4");
-  animasyon.play();
+  //animasyon.play();
   minim = new Minim(this);
   music = minim.loadFile("music.mp3");
+  myEoS();
 }
 
 void draw() {
   textSize(normal_text);
-  image(animasyon, 0, 0);
+  //image(animasyon, 0, 0);
   if (ended)
   {
     background(255);
@@ -407,6 +413,7 @@ void draw() {
       rect(30, 50, lider.can, 50, 10, 10, 10, 10);
       fill(255);
       rect(970, 50, muhalefet.can, 50, 10, 10, 10, 10);
+      fill(0);
       if (isPicturesBig) {
         lider.resim.resize(lider.resim.width - 50, lider.resim.height - 50);
         muhalefet.resim.resize(muhalefet.resim.width - 50, muhalefet.resim.height - 50);
@@ -415,87 +422,116 @@ void draw() {
         isPicturesBig = false;
       }
 
-      lider.y += lider.speedY;
-      //Lider zıpladığı için yerden daha aşağı düşmemeli
-      if (lider.y + lider.resim.height > groundY) {
-        lider.y = groundY - lider.resim.height;
-        lider.speedY = 0;
-        lider.jumping = false;
-      } else {
-        lider.speedY ++;
-        if (lider.speedY > 0) {
-          atak = false;
-        }
-      }
-      //Ayrıca muhalefetin de içine girmemeli
-      if (pow((lider.x + lider.resim.width / 2) - (muhalefet.x + muhalefet.resim.width / 2), 2) + pow((lider.y + lider.resim.height / 2) - (muhalefet.y + muhalefet.resim.height / 2), 2) < pow(muhalefet.resim.height / 2 + lider.resim.width / 2, 2)) {
-        if (lider.y == muhalefet.y + (lider.resim.height - muhalefet.resim.height))
-        {
-          if (lider.x < muhalefet.x)
-            lider.x = muhalefet.x - lider.resim.width;
-          else
-            lider.x = muhalefet.x + muhalefet.resim.width;
-        } else {
+      image(resimDin, 1100, 150);
+      text("x" + nesneler[0], 1130, 270);
+      image(resimAdalet, 1100, 280);
+      text("x" + nesneler[1], 1130, 420);
+      image(resimOzgurluk, 1100, 420);
+      text("x" + nesneler[2], 1130, 540);
+      image(resimEgitim, 1100, 560);
+      text("x" + nesneler[3], 1130, 680);
+
+      if (keys[0]) {
+
+        lider.y += lider.speedY;
+        //Lider zıpladığı için yerden daha aşağı düşmemeli
+        if (lider.y + lider.resim.height > groundY) {
+          lider.y = groundY - lider.resim.height;
+          lider.speedY = 0;
           lider.jumping = false;
-          lider.jump();
-          if (!atak)
-          {
-            muhalefet.hasar();
+        } else {
+          lider.speedY ++;
+          if (lider.speedY > 0) {
+            atak = false;
           }
-          atak = true;
         }
-      }
-
-      if ((lider.x + lider.resim.width) - muhalefet.x < 10 || (lider.x) - muhalefet.x < 210)
-        lider.jump();
-      if (abs(lider.x - muhalefet.x) > 50)
-        if (lider.x - muhalefet.x > 40)
-          lider.x -= 10;
-        else if (lider.x - muhalefet.x < 40)
-          lider.x += 10;
-
-      if (keys[1])
-        if (muhalefet.x < width-muhalefet.resim.width) {
-          muhalefet.x += muhalefet.speedX;
+        //Ayrıca muhalefetin de içine girmemeli
+        if (pow((lider.x + lider.resim.width / 2) - (muhalefet.x + muhalefet.resim.width / 2), 2) + pow((lider.y + lider.resim.height / 2) - (muhalefet.y + muhalefet.resim.height / 2), 2) < pow(muhalefet.resim.height / 2 + lider.resim.width / 2, 2)) {
+          if (lider.y == muhalefet.y + (lider.resim.height - muhalefet.resim.height))
+          {
+            if (lider.x < muhalefet.x)
+              lider.x = muhalefet.x - lider.resim.width;
+            else
+              lider.x = muhalefet.x + muhalefet.resim.width;
+          } else {
+            lider.jumping = false;
+            lider.jump();
+            if (!atak)
+            {
+              muhalefet.hasar();
+            }
+            atak = true;
+          }
         }
-      if (keys[2])
-        if (muhalefet.x > 0) {
-          muhalefet.x -= muhalefet.speedX;
+
+        if (abs(lider.x - muhalefet.x + 100) < 250)
+          lider.jump();
+        if (abs(lider.x - muhalefet.x) > 50)
+          if (lider.x - muhalefet.x > 40)
+            lider.x -= 10;
+          else if (lider.x - muhalefet.x < 40)
+            lider.x += 10;
+
+        if (keys[1])
+          if (muhalefet.x < width-muhalefet.resim.width) {
+            muhalefet.x += muhalefet.speedX;
+          }
+        if (keys[2])
+          if (muhalefet.x > 0) {
+            muhalefet.x -= muhalefet.speedX;
+          }
+
+        //Atak Kodu
+
+        //Nesneleri doldur
+        if (!projectilesPopulated) {
+          if (mouseX > 1130 && mouseX < 1230) {
+            if (mouseY > 150 && mouseY < 250 && nesneler[0] > 0) {
+              nesne = new Nesne(mouseX, mouseY, resimDin, 0);
+              projectilesPopulated = true;
+            } else if (mouseY > 280 && mouseY < 380 && nesneler[1] > 0) {
+              nesne = new Nesne(mouseX, mouseY, resimAdalet, 1);
+              projectilesPopulated = true;
+            } else if (mouseY > 420 && mouseY < 520 && nesneler[1] > 0) {
+              nesne = new Nesne(mouseX, mouseY, resimOzgurluk, 2);
+              projectilesPopulated = true;
+            } else if (mouseY > 560 && mouseY < 660 && nesneler[1] > 0) {
+              nesne = new Nesne(mouseX, mouseY, resimEgitim, 3);
+              projectilesPopulated = true;
+            }
+          }
+        }
+        if (!mousePressed) {
+          projectilesPopulated = false;
+          nesne = null;
+        }
+        if (nesne != null) {
+          //Nesneyi fareyle tutuyor muyuz?
+          nesne.update();
+
+          nesne.display();
+          //Nesne lidere çarptı mı?
+          if (pow((lider.x + lider.resim.width / 2) - (nesne.location.x), 2) + pow((lider.y + lider.resim.height / 2) - (nesne.location.y), 2) < pow(8 + lider.resim.width / 2, 2)) {
+            lider.hasar();
+            nesneler[nesne.index]--;
+            nesne = null;
+          }
         }
 
-
-      //Atak Kodu
-      if (mousePressed && (mouseButton == LEFT) && nesneler.size() < 10 && millis() > sure) {
-        sure = millis() + 500;
-        nesneler.add(new Nesne(muhalefet.x + muhalefet.resim.width / 2, muhalefet.y + muhalefet.resim.height / 2, mouseX, mouseY, projectile[int(random(0.0, 3.0))]));
-      }
-      for (int i = 0; i < nesneler.size(); i++) {
-        //Nesne ekran dışına çıktıysa siliyoruz
-        if (nesneler.get(i).toDestroy) {
-          nesneler.remove(i);
-          continue;
+        if (lider.can == 0) {
+          sure = millis() + 1000;
+          while (millis() < sure);
+          sahne = 70;
         }
-        nesneler.get(i).update();
-        nesneler.get(i).checkEdges();
-        nesneler.get(i).display();
-        //Nesne lidere çarptı mı?
-        if (pow((lider.x + lider.resim.width / 2) - (nesneler.get(i).location.x), 2) + pow((lider.y + lider.resim.height / 2) - (nesneler.get(i).location.y), 2) < pow(8 + lider.resim.width / 2, 2)) {
-          println(lider.can);
-          lider.hasar();
-          nesneler.remove(i);
-          continue;
+        if (muhalefet.can == 0) {
+          sure = millis() + 1000;
+          while (millis() < sure);
+          sahne = 60;
         }
-      }
-
-      if (lider.can == 0) {
-        sure = millis() + 1000;
-        while (millis() < sure);
-        sahne = 70;
-      }
-      if (muhalefet.can == 0) {
-        sure = millis() + 1000;
-        while (millis() < sure);
-        sahne = 60;
+      } else {
+        textSize(100);
+        fill(128);
+        text("PAUSED", 500, 360);
       }
 
       break;
@@ -510,8 +546,8 @@ void playAnlasmaAnimation() {
 
 void keyPressed()
 {
-  if (keyCode == UP)
-    keys[0]=true;
+  if (keyCode == ' ')
+    keys[0]=false;
   if (keyCode == RIGHT)
     keys[1]=true;
   if (keyCode == LEFT)
@@ -522,8 +558,8 @@ void keyPressed()
 
 void keyReleased()
 {
-  if (keyCode == UP)
-    keys[0]=false;
+  if (keyCode == ' ')
+    keys[0]=true;
   if (keyCode == RIGHT)
     keys[1]=false;
   if (keyCode == LEFT)
