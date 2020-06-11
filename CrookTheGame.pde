@@ -68,7 +68,7 @@ void setup() {
   projectile[0] = loadImage("projectile/1.png");
   projectile[1] = loadImage("projectile/2.png");
   projectile[2] = loadImage("projectile/3.png");
-  animasyon = new Movie(this, "animation/animasyon_trim.mp4") {
+  animasyon = new Movie(this, "animation/animasyon.mp4") {
     @ Override public void eosEvent() {
       super.eosEvent();
       myEoS();
@@ -101,7 +101,7 @@ void draw() {
     fill(0);
 
     //Debug
-    println(mouseX + " " + mouseY + "\n");
+    //println(mouseX + " " + mouseY + "\n");
 
     switch(sahne) {
     case 0:
