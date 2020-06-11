@@ -17,7 +17,7 @@ class Muhalefet {
   
   void hasar(){
     if(this.can > 0)
-      this.can -= 70;
+      this.can -= 28;
     //if(this.can % 4 == 0)
     resim.resize(resim.width,resim.height -50);
     this.y = groundY - this.resim.height;

@@ -292,7 +292,7 @@ void draw() {
               sure = millis() + 4000;
             }
           }
-          text(": There are other ways to change.Stop\n destroying education please.", 275, 75);
+          text(": There are other ways to change.", 275, 75);
           textSize(normal_text);
           if (mouseY < 205  && mouseY > 180 && mouseX > 250) {
             textSize(big_text);
@@ -401,7 +401,7 @@ void draw() {
           }
           image(konusma, 0, -50);
         } else {
-          lider.say("Okay but on one condition.\nYou will obey Mr. Big.");
+          lider.say("Okay but on one condition.You will obey Mr. Big.");
         }
         break;
         //Kazanma
